@@ -6,13 +6,16 @@ import {
   Image,
   Pressable,
 } from "react-native";
+import { useTheme } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { getWordInfo } from "../../services/wordsHandler";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { playSound } from "../../services/soundHandler";
-import { COLORS } from "../../constants";
+import { COLORS, COLORS_LIGHT } from "../../constants";
 
 function AddWord({ navigation }) {
+  const { palette } = useTheme();
+  const styles = makeStyles(palette);
   const [text, setText] = useState();
   const [wordData, setWordData] = useState();
 
@@ -45,7 +48,7 @@ function AddWord({ navigation }) {
   }
 
   return (
-    <>
+    <View style={styles.mainContainer}>
       <Image
         style={{
           marginTop: 80,
@@ -65,7 +68,7 @@ function AddWord({ navigation }) {
           onChangeText={onChangeText}
           value={text}
           placeholder="type here.."
-          placeholderTextColor={COLORS.grey600}
+          placeholderTextColor={palette.grey600}
         />
       </View>
       {wordData && (
@@ -80,7 +83,7 @@ function AddWord({ navigation }) {
                 <Ionicons
                   name="volume-medium-outline"
                   size={28}
-                  color={COLORS.primary900}
+                  color={palette.primary900}
                 />
               </Pressable>
             )}
@@ -90,82 +93,86 @@ function AddWord({ navigation }) {
           <Text style={styles.meaning}>{wordData.meaning}</Text>
           {wordData.word && (
             <Pressable style={styles.buttonContainer} onPress={onAdd}>
-              <Text style={{ fontSize: 24, color: COLORS.fontInverse }}>
+              <Text style={{ fontSize: 24, color: palette.fontInverse }}>
                 Add
               </Text>
             </Pressable>
           )}
         </View>
       )}
-    </>
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    fontSize: 18,
-    borderColor: COLORS.primary200,
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-    color: COLORS.fontMain,
-  },
-  label: {
-    fontSize: 12,
-    color: COLORS.grey600,
-    marginBottom: 4,
-  },
-  inputContainer: {
-    marginHorizontal: 12,
-  },
-  receivedInfoContainer: {
-    flex: 1,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    fontSize: 32,
-  },
-  word: {
-    fontSize: 32,
-    paddingHorizontal: 10,
-    color: COLORS.fontMain,
-  },
-  phonetics: {
-    fontSize: 20,
-    paddingHorizontal: 10,
-    color: COLORS.fontMain,
-  },
-  partOfSpeech: {
-    fontSize: 20,
-    paddingHorizontal: 10,
-    color: COLORS.fontMain,
-  },
-  meaning: {
-    fontSize: 16,
-    padding: 13,
-    color: COLORS.fontMain,
-  },
-  buttonContainer: {
-    borderRadius: 4,
-    backgroundColor: COLORS.primary900,
-    height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  backPressable: {
-    position: "absolute",
-    width: 60,
-    borderRadius: 30,
-    aspectRatio: 1,
-    top: "2%",
-    left: "2%",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 10,
-  },
-  playPressable: {
-    marginHorizontal: 20,
-  },
-});
+const makeStyles = (c) =>
+  StyleSheet.create({
+    mainContainer: {
+      flex: 1,
+    },
+    input: {
+      height: 40,
+      fontSize: 18,
+      borderColor: c.primary200,
+      borderWidth: 1,
+      borderRadius: 5,
+      padding: 10,
+      color: c.fontMain,
+    },
+    label: {
+      fontSize: 12,
+      color: c.grey600,
+      marginBottom: 4,
+    },
+    inputContainer: {
+      marginHorizontal: 12,
+    },
+    receivedInfoContainer: {
+      flex: 1,
+      paddingVertical: 8,
+      paddingHorizontal: 10,
+      fontSize: 32,
+    },
+    word: {
+      fontSize: 32,
+      paddingHorizontal: 10,
+      color: c.fontMain,
+    },
+    phonetics: {
+      fontSize: 20,
+      paddingHorizontal: 10,
+      color: c.fontMain,
+    },
+    partOfSpeech: {
+      fontSize: 20,
+      paddingHorizontal: 10,
+      color: c.fontMain,
+    },
+    meaning: {
+      fontSize: 16,
+      padding: 13,
+      color: c.fontMain,
+    },
+    buttonContainer: {
+      borderRadius: 4,
+      backgroundColor: c.primary900,
+      height: 40,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    backPressable: {
+      position: "absolute",
+      width: 60,
+      borderRadius: 30,
+      aspectRatio: 1,
+      top: "2%",
+      left: "2%",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 10,
+    },
+    playPressable: {
+      marginHorizontal: 20,
+    },
+  });
 
 export default AddWord;

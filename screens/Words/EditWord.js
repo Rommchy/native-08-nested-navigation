@@ -6,13 +6,16 @@ import {
   Image,
   Pressable,
 } from "react-native";
-import { useState } from "react";
+import { use, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { playSound } from "../../services/soundHandler";
 import { COLORS } from "../../constants";
+import { useTheme } from "@react-navigation/native";
 
 function EditWord({ route, navigation }) {
   const [wordData, setWordData] = useState(() => route.params.wordData);
+  const { palette } = useTheme();
+  const styles = makeStyles(palette);
 
   function onSave() {
     navigation.navigate("AllWords", {
@@ -50,7 +53,7 @@ function EditWord({ route, navigation }) {
               <Ionicons
                 name="volume-medium-outline"
                 size={28}
-                color={COLORS.primary900}
+                color={palette.primary900}
               />
             </Pressable>
           )}
@@ -84,7 +87,7 @@ function EditWord({ route, navigation }) {
         />
         {wordData.word && (
           <Pressable style={styles.buttonContainer} onPress={onSave}>
-            <Text style={{ fontSize: 24, color: COLORS.fontInverse }}>
+            <Text style={{ fontSize: 24, color: palette.fontInverse }}>
               Save
             </Text>
           </Pressable>
@@ -94,68 +97,69 @@ function EditWord({ route, navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  input: {
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 6,
-    borderColor: COLORS.primary200,
-    color: COLORS.fontMain,
-  },
-  label: {
-    fontSize: 12,
-    color: COLORS.grey600,
-    marginBottom: 4,
-    paddingTop: 10,
-  },
-  inputContainer: {
-    margin: 12,
-  },
-  receivedInfoContainer: {
-    flex: 1,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    fontSize: 32,
-  },
-  word: {
-    fontSize: 32,
-    paddingHorizontal: 10,
-    color: COLORS.fontMain,
-  },
-  phonetics: {
-    fontSize: 20,
-    paddingHorizontal: 10,
-  },
-  partOfSpeech: {
-    fontSize: 20,
-    paddingHorizontal: 10,
-  },
-  meaning: {
-    fontSize: 16,
-    padding: 13,
-  },
-  buttonContainer: {
-    borderRadius: 4,
-    backgroundColor: COLORS.primary900,
-    height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    marginVertical: 14,
-  },
-  backPressable: {
-    position: "absolute",
-    width: 60,
-    borderRadius: 30,
-    aspectRatio: 1,
-    top: "2%",
-    left: "2%",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 10,
-  },
-  playPressable: {
-    marginHorizontal: 20,
-  },
-});
+const makeStyles = (c) =>
+  StyleSheet.create({
+    input: {
+      borderWidth: 1,
+      borderRadius: 5,
+      paddingHorizontal: 6,
+      borderColor: c.primary200,
+      color: c.fontMain,
+    },
+    label: {
+      fontSize: 12,
+      color: c.grey600,
+      marginBottom: 4,
+      paddingTop: 10,
+    },
+    inputContainer: {
+      margin: 12,
+    },
+    receivedInfoContainer: {
+      flex: 1,
+      paddingVertical: 8,
+      paddingHorizontal: 10,
+      fontSize: 32,
+    },
+    word: {
+      fontSize: 32,
+      paddingHorizontal: 10,
+      color: c.fontMain,
+    },
+    phonetics: {
+      fontSize: 20,
+      paddingHorizontal: 10,
+    },
+    partOfSpeech: {
+      fontSize: 20,
+      paddingHorizontal: 10,
+    },
+    meaning: {
+      fontSize: 16,
+      padding: 13,
+    },
+    buttonContainer: {
+      borderRadius: 4,
+      backgroundColor: c.primary900,
+      height: 40,
+      alignItems: "center",
+      justifyContent: "center",
+      marginVertical: 14,
+    },
+    backPressable: {
+      position: "absolute",
+      width: 60,
+      borderRadius: 30,
+      aspectRatio: 1,
+      top: "2%",
+      left: "2%",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 10,
+    },
+    playPressable: {
+      marginHorizontal: 20,
+    },
+  });
 
 export default EditWord;

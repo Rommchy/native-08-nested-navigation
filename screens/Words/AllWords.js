@@ -9,11 +9,14 @@ import {
 import { useState, useEffect } from "react";
 import Item from "../../components/ListItem";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useTheme } from "@react-navigation/native";
 
 import { COLORS } from "../../constants";
 
 function AllWords({ route, navigation }) {
   const [myWords, setMyWords] = useState([]);
+  const { palette } = useTheme();
+  const styles = makeStyles(palette);
 
   useEffect(() => {
     const wordDataAdd = route.params?.wordDataAdd;
@@ -25,8 +28,8 @@ function AllWords({ route, navigation }) {
     if (wordDataEdit) {
       setMyWords((prev) =>
         prev.map((item) =>
-          item.word === wordDataEdit.word ? wordDataEdit : item
-        )
+          item.word === wordDataEdit.word ? wordDataEdit : item,
+        ),
       );
     }
   }, [route]);
@@ -36,12 +39,12 @@ function AllWords({ route, navigation }) {
   }
 
   return (
-    <>
+    <View style={styles.mainContainer}>
       <Pressable
         style={styles.addPressable}
         onPress={() => navigation.navigate("AddWord")}
       >
-        <Ionicons name="add-outline" size={46} color={COLORS.fontInverse} />
+        <Ionicons name="add-outline" size={46} color={palette.fontInverse} />
       </Pressable>
       <View style={{ flex: 2 }}>
         <FlatList
@@ -64,49 +67,53 @@ function AllWords({ route, navigation }) {
           }
         />
       </View>
-    </>
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
-  imageContainer: {
-    height: 220,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 40,
-    zIndex: 10,
-  },
-  addPressable: {
-    position: "absolute",
-    width: 60,
-    borderRadius: 30,
-    aspectRatio: 1,
-    top: 210,
-    right: "10%",
-    backgroundColor: COLORS.primary900,
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 10,
-    elevation: 5,
-  },
-  image: {
-    width: "45%",
-    height: undefined,
-    aspectRatio: 1,
-    alignSelf: "center",
-    resizeMode: "contain",
-  },
-  empty: {
-    height: 300,
-    backgroundColor: COLORS.fontInverse,
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 5,
-  },
-  textEmpty: {
-    fontSize: 40,
-    color: COLORS.primary200,
-  },
-});
+const makeStyles = (c) =>
+  StyleSheet.create({
+    mainContainer: {
+      flex: 1,
+    },
+    imageContainer: {
+      height: 220,
+      alignItems: "center",
+      justifyContent: "center",
+      marginTop: 40,
+      zIndex: 10,
+    },
+    addPressable: {
+      position: "absolute",
+      width: 60,
+      borderRadius: 30,
+      aspectRatio: 1,
+      top: 210,
+      right: "10%",
+      backgroundColor: c.primary900,
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 10,
+      elevation: 5,
+    },
+    image: {
+      width: "45%",
+      height: undefined,
+      aspectRatio: 1,
+      alignSelf: "center",
+      resizeMode: "contain",
+    },
+    empty: {
+      height: 300,
+      backgroundColor: c.fontInverse,
+      alignItems: "center",
+      justifyContent: "center",
+      elevation: 5,
+    },
+    textEmpty: {
+      fontSize: 40,
+      color: c.primary200,
+    },
+  });
 
 export default AllWords;
